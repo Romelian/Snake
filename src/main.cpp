@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 {
 
     std::vector<vector2<int>> snake{vector2(0, 0)};
-    vector2 map_size(16, 5); 
+    constexpr vector2 map_size(16, 5); 
     char display[map_size.x][map_size.y];
     vector2 food_position(rand() % map_size.x, rand() % map_size.y);
     vector2 forward_velocity(1, 0);
