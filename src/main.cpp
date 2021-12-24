@@ -1,63 +1,9 @@
 #include <iostream>
-#include <string>
 #include <vector>
 #include <chrono>
 #include <thread>
 #include <Windows.h>
-template <typename T>
-struct vector2
-{
-    T x;
-    T y;
-    constexpr vector2(T x, T y) : x(x), y(y){};
-    template <typename F>
-    constexpr vector2 op(const T &value, const F func)
-    {
-        return vector2(func(this->x, value), func(this->y, value));
-    };
-    template <typename F>
-    constexpr vector2 op(const vector2 &b, const F &func)
-    {
-        return vector2(func(this->x, b.x), func(this->y, b.y));
-    };
-    constexpr vector2 operator+(const T &value)
-    {
-        return vector2(this->x + value, this->y + value);
-    };
-    constexpr vector2 operator+(const vector2 &b)
-    {
-        return vector2(this->x + b.x, this->y + b.y);
-    };
-    constexpr vector2 operator*(const T &value)
-    {
-        return vector2(this->x * value, this->y * value);
-    };
-    constexpr vector2 operator*(const vector2 &b)
-    {
-        return vector2(this->x * b.x, this->y * b.y);
-    };
-    constexpr vector2 operator%(const T &value)
-    {
-        return vector2(this->x % value, this->y % value);
-    };
-    constexpr vector2 operator%(const vector2 &b)
-    {
-        return vector2(this->x % b.x, this->y % b.y);
-    };
-    constexpr bool operator==(const vector2 &b)
-    {
-        return this->x == b.x && this->y == b.y;
-    };
-    template <typename F>
-    constexpr friend std::ostream &operator<<(std::ostream &out, const vector2<F> &b);
-};
-
-template <typename F>
-constexpr std::ostream &operator<<(std::ostream &out, const vector2<F> &b)
-{
-    out << '(' << b.x << ", " << b.y << ')';
-    return out;
-}
+#include "vector2.h"
 
 void Clear() // From https://stackoverflow.com/a/52895729/15175683
 {
@@ -71,7 +17,6 @@ void Clear() // From https://stackoverflow.com/a/52895729/15175683
     system("clear");
 #endif
 }
-
 int Wrap(int value, int upper_bound)
 {
     if (value < 0)
@@ -84,7 +29,7 @@ int main(int argc, char *argv[])
 {
 
     std::vector<vector2<int>> snake{vector2(0, 0)};
-    constexpr vector2 map_size(16, 5);
+    vector2 map_size(16, 5); 
     char display[map_size.x][map_size.y];
     vector2 food_position(rand() % map_size.x, rand() % map_size.y);
     vector2 forward_velocity(1, 0);
@@ -118,7 +63,8 @@ int main(int argc, char *argv[])
             }
             std::cout << std::endl;
         }
-        std::cout << snake.front() << std::endl;
+        std::cout << "Size: " << snake.size() << std::endl; // Display Snake Size
+        std::cout << "Position: " << snake.front() << std::endl; // Display Snake Head Position
 
         // Food Update
         if (snake.front() == food_position)
